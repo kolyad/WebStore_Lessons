@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
@@ -20,11 +19,11 @@ namespace WebStore.Infrastructure.Services
         public IEnumerable<Employee> Get() => _employees;
 
         public Employee Get(int id) => _employees.FirstOrDefault(e => e.Id == id);
-        
+
         public int Add(Employee employee)
         {
-            _ = employee ?? throw new ArgumentNullException();            
-            
+            _ = employee ?? throw new ArgumentNullException();
+
             if (_employees.Contains(employee))
             {
                 return employee.Id;

@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebStore.Data;
+using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
 
 namespace WebStore.Controllers
 {
     public class EmployeesController : Controller
     {
-        private List<Employee> _employees;
+        private readonly IEmployeesData _employeesData;
 
-        public EmployeesController()
+        public EmployeesController(IEmployeesData employeesData)
         {
-            _employees = TestData.Employees;
+            _employeesData = employeesData;
         }
 
-        public IActionResult Index() => View(_employees);
+        public IActionResult Index() => View(_employeesData.Get());
 
         public IActionResult Details(int Id)
         {
-            var model = _employees.FirstOrDefault(x => x.Id == Id);
+            var model = _employeesData.Get(Id);
 
             if (model is not null)
                 return View(model);
