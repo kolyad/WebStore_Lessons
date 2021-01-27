@@ -30,6 +30,9 @@ namespace WebStore.Controllers
             return NotFound();
         }
 
+        public IActionResult Create() => View("Edit", new EmployeeViewModel());
+
+        #region Edit
         public IActionResult Edit(int Id)
         {
             if (Id <= 0)
@@ -72,12 +75,21 @@ namespace WebStore.Controllers
                 HireDate = model.HireDate
             };
 
-            _employeesData.Update(employee);
+            if (employee.Id == 0)
+            {
+                _employeesData.Add(employee);
+            }
+            else
+            {
+                _employeesData.Update(employee);
+            }
 
             return RedirectToAction("Index");
         }
+        #endregion
 
 
+        #region Delete
         public IActionResult Delete(int Id)
         {
             if (Id <= 0)
@@ -110,6 +122,7 @@ namespace WebStore.Controllers
             _employeesData.Delete(Id);
             return RedirectToAction("Index");
         }
+        #endregion
 
     }
 }
