@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+п»їusing Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,10 +27,13 @@ namespace WebStore
 
             app.UseRouting();
 
+            app.UseWelcomePage("/welcome");
+
+
             app.UseEndpoints(endpoints =>
             {
-                // Русский комментарий
-                // Русский комментарий
+                // Р СѓСЃСЃРєРёР№ РєРѕРјРјРµРЅС‚Р°СЂРёР№
+                // Р СѓСЃСЃРєРёР№ РєРѕРјРјРµРЅС‚Р°СЂРёР№
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{Id?}");
