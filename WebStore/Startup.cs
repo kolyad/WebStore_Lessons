@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -30,6 +29,8 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                // Русский комментарий
+                // Русский комментарий
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{Id?}");
