@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using WebStore.DAL.Context;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Services;
+using WebStore.Data;
+using WebStore.Infrastructure.Services.InSql;
 
 namespace WebStore
 {
@@ -20,19 +22,23 @@ namespace WebStore
         }
      
         public void ConfigureServices(IServiceCollection services)
-        {
+        {         
             services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("Default")));
+
+            services.AddTransient<WebStoreDbInitializer>();
 
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
 
-            services.AddTransient<IProductData, InMemoryProductData>();
+            services.AddTransient<IProductData, SqlProductData>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
         }
        
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
         {
+            db.Initialize();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();                
