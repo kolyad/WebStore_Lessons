@@ -8,6 +8,6 @@
         
         public int Order { get; init; }
 
-        public int ProductCount { get; init; }
+        public int ProductsCount { get; init; }
     }
 }
