@@ -21,7 +21,8 @@ namespace WebStore.Components
                 .Select(s => new BrandViewModel
                 {
                     Id = s.Id,
-                    Name = s.Name
+                    Name = s.Name,
+                    ProductCount = s.Products.Count()
                 });
 
             return View(brand_views);
