@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entities.Identity;
@@ -13,13 +12,16 @@ namespace WebStore.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<AccountController> _logger;
 
         public AccountController(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
 
         #region Register
@@ -33,6 +35,8 @@ namespace WebStore.Controllers
                 return View();
             }
 
+            _logger.LogInformation("Регистрация пользователя {UserName}", model.UserName);
+
             var user = new User
             {
                 UserName = model.UserName
@@ -41,9 +45,16 @@ namespace WebStore.Controllers
             var registrationResult = await _userManager.CreateAsync(user, model.Password);
             if (registrationResult.Succeeded)
             {
+                _logger.LogInformation("Пользователь {UserName} успешно зарегистрирован", model.UserName);
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
+                
                 return RedirectToAction("Index", "Home");
             }
+
+            _logger.LogInformation("В процессе регистрации пользователя {UserName} произошли ошибки {ErrorDescriptionList}", 
+                model.UserName,
+                string.Join(',', registrationResult.Errors.Select(s => s.Description)));
 
             foreach (var error in registrationResult.Errors)
             {
@@ -65,6 +76,8 @@ namespace WebStore.Controllers
                 return View();
             }
 
+            _logger.LogInformation("Попытка входа пользователя {UserName}", model.UserName);
+
             var login_result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe,
 #if DEBUG
                 false
@@ -75,8 +88,12 @@ namespace WebStore.Controllers
 
             if (login_result.Succeeded)
             {
+                _logger.LogInformation("Вход пользователя {UserName} осуществлён успешно", model.UserName);
+            
                 return LocalRedirect(model.ReturnUrl ?? "/");
             }
+
+            _logger.LogInformation("Вход пользователя {UserName} потерпел неудачу", model.UserName);
 
             ModelState.AddModelError("", "Неверное имя пользователя или пароль");
 
@@ -89,14 +106,14 @@ namespace WebStore.Controllers
         {
             await _signInManager.SignOutAsync();
 
-           return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
-        
+
         public IActionResult AccessDenied(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-           return View();
+            return View();
         }
-    
+
     }
 }

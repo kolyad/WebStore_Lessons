@@ -41,7 +41,7 @@ namespace WebStore
                 opt.Password.RequiredUniqueChars = 3;
 #endif
                 opt.User.RequireUniqueEmail = false;
-                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 
                 opt.Lockout.AllowedForNewUsers = false;
                 opt.Lockout.MaxFailedAccessAttempts = 10;
