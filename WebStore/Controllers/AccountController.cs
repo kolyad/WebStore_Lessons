@@ -84,5 +84,19 @@ namespace WebStore.Controllers
         }
         #endregion
 
+        [ActionName("Logout")]
+        public async Task<IActionResult> LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+
+           return RedirectToAction("Index", "Home");
+        }
+        
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+           return View();
+        }
+    
     }
 }
