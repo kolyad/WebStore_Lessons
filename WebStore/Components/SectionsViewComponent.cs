@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.ViewModels;
 
@@ -24,7 +22,7 @@ namespace WebStore.Components
             var parent_sections = sections.Where(x => !x.ParentId.HasValue);
 
             var parent_sections_views = parent_sections
-                .Select(x => new SectionViewModel 
+                .Select(x => new SectionViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -51,8 +49,8 @@ namespace WebStore.Components
                 }
 
                 parent_section.ChildSections.Sort(OrderSortMethod);
-            }   
-            
+            }
+
             parent_sections_views.Sort(OrderSortMethod);
 
             return View(parent_sections_views);

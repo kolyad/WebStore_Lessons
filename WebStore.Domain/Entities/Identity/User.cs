@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WebStore.Domain.Entities.Identity
 {
@@ -12,5 +9,5 @@ namespace WebStore.Domain.Entities.Identity
         public const string DefaultAdministratorPassword = "Admin";
 
         public string Description { get; set; }
-    } 
+    }
 }
