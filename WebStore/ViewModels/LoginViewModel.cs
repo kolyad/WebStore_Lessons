@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebStore.ViewModels
 {
-    public class RegisterUserViewModel
+    public class LoginViewModel
     {
         [Required]
         [MaxLength(256)]
@@ -15,10 +16,10 @@ namespace WebStore.ViewModels
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение пароля")]
-        [Compare(nameof(Password))]
-        public string PasswordConfirm { get; set; }
+        [Display(Name = "Запомнить меня")]
+        public bool RememberMe { get; set; }
+
+        [HiddenInput(DisplayValue = false)]
+        public string ReturnUrl { get; set; }
     }
 }
