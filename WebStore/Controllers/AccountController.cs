@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
@@ -8,6 +9,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -25,9 +27,11 @@ namespace WebStore.Controllers
         }
 
         #region Register
+        [AllowAnonymous]
         public IActionResult Register() => View(new RegisterUserViewModel());
 
         [HttpPost, ValidateAntiForgeryToken, ActionName("Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync(RegisterUserViewModel model)
         {
             if (!ModelState.IsValid)
@@ -51,11 +55,11 @@ namespace WebStore.Controllers
                 _logger.LogInformation("Пользователь {UserName} наделён ролью {UserRole}", model.UserName, Role.User);
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                
+
                 return RedirectToAction("Index", "Home");
             }
 
-            _logger.LogInformation("В процессе регистрации пользователя {UserName} произошли ошибки {ErrorDescriptionList}", 
+            _logger.LogInformation("В процессе регистрации пользователя {UserName} произошли ошибки {ErrorDescriptionList}",
                 model.UserName,
                 string.Join(',', registrationResult.Errors.Select(s => s.Description)));
 
@@ -69,9 +73,11 @@ namespace WebStore.Controllers
         #endregion
 
         #region Login
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl) => View(new LoginViewModel { ReturnUrl = returnUrl });
 
         [HttpPost, ValidateAntiForgeryToken, ActionName("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginAsync(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -92,7 +98,7 @@ namespace WebStore.Controllers
             if (login_result.Succeeded)
             {
                 _logger.LogInformation("Вход пользователя {UserName} осуществлён успешно", model.UserName);
-            
+
                 return LocalRedirect(model.ReturnUrl ?? "/");
             }
 
