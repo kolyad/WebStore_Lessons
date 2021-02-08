@@ -12,6 +12,7 @@ using WebStore.Infrastructure.Services.InSql;
 using WebStore.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
+using WebStore.Infrastructure.Services.InCookies;
 
 namespace WebStore
 {
@@ -69,6 +70,8 @@ namespace WebStore
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
 
             services.AddTransient<IProductData, SqlProductData>();
+
+            services.AddTransient<ICartService, InCookiesCartService>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();

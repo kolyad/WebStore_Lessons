@@ -24,14 +24,21 @@ namespace WebStore.Infrastructure.Services.InSql
         {
             IQueryable<Product> productQuery = _db.Products;
 
-            if (productFilter?.SectionId is { } sectionId)
+            if (productFilter?.Ids?.Length > 0)
             {
-                productQuery = productQuery.Where(x => x.SectionId == sectionId);
+                productQuery = productQuery.Where(x => productFilter.Ids.Contains(x.Id));
             }
-
-            if (productFilter?.BrandId is { } brandId)
+            else
             {
-                productQuery = productQuery.Where(x => x.BrandId == brandId);
+                if (productFilter?.SectionId is { } sectionId)
+                {
+                    productQuery = productQuery.Where(x => x.SectionId == sectionId);
+                }
+
+                if (productFilter?.BrandId is { } brandId)
+                {
+                    productQuery = productQuery.Where(x => x.BrandId == brandId);
+                }
             }
 
             return productQuery;
