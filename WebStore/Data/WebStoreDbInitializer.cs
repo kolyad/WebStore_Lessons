@@ -51,7 +51,7 @@ namespace WebStore.Data
             try
             {
                 InitializeProducts();
-                InitializeIdentity();
+                InitializeIdentityAsync().Wait();
             }
             catch (Exception ex)
             {
@@ -119,10 +119,9 @@ namespace WebStore.Data
             _logger.LogInformation("Инициализация товаров выполнена успешно");
         }
 
-        private async Task InitializeIdentity()
+        private async Task InitializeIdentityAsync()
         {
             _logger.LogInformation("Инициализация системы Identity");
-
 
             async Task CheckRole(string roleName)
             {
