@@ -84,7 +84,8 @@ namespace WebStore.Infrastructure.Services.InCookies
             {
                 item.Quantity--;
             }
-            else if (item.Quantity == 0)
+            
+            if (item.Quantity == 0)
             {
                 cart.Items.Remove(item);
             }
