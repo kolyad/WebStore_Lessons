@@ -2,8 +2,12 @@
 {
     public record BrandViewModel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Order { get; set; }
+        public int Id { get; init; }
+        
+        public string Name { get; init; }
+        
+        public int Order { get; init; }
+
+        public int ProductsCount { get; init; }
     }
 }
