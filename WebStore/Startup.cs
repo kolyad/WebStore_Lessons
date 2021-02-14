@@ -63,7 +63,9 @@ namespace WebStore
 
             });
 
-            services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("Default")));
+            services.AddDbContext<WebStoreDb>(opt =>
+                opt.UseSqlServer(_configuration.GetConnectionString("Default"))
+                   .UseLazyLoadingProxies());
 
             services.AddTransient<WebStoreDbInitializer>();
 
