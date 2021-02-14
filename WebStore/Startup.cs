@@ -43,13 +43,13 @@ namespace WebStore
 #endif
                 opt.User.RequireUniqueEmail = false;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                
+
                 opt.Lockout.AllowedForNewUsers = false;
                 opt.Lockout.MaxFailedAccessAttempts = 10;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
             });
 
-            services.ConfigureApplicationCookie(opt => 
+            services.ConfigureApplicationCookie(opt =>
             {
                 opt.Cookie.Name = "WebStore.GB";
                 opt.Cookie.HttpOnly = true;
@@ -98,11 +98,14 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                // Русский комментарий
-                // Русский комментарий
                 endpoints.MapControllerRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{Id?}");
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    );
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{Id?}");
             });
         }
     }
