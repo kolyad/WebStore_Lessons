@@ -22,7 +22,9 @@ namespace WebStore.Infrastructure.Services.InSql
 
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null)
         {
-            IQueryable<Product> productQuery = _db.Products;
+            IQueryable<Product> productQuery = _db.Products
+                .Include(i => i.Brand)
+                .Include(i => i.Section);
 
             if (productFilter?.Ids?.Length > 0)
             {
