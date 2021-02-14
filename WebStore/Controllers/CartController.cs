@@ -47,6 +47,7 @@ namespace WebStore.Controllers
 
 
         [Authorize]
+        [ActionName("CheckOut")]
         public async Task<IActionResult> CheckOutAsync(OrderViewModel orderModel, [FromServices] IOrderService orderService)
         {
             if (!ModelState.IsValid)

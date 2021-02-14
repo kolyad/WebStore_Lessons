@@ -19,63 +19,61 @@
             {
                 <table class="table table-condensed">
                     <tbody>
-                        <thead>
-                            <tr class="cart_menu">
-                                <td class="image">Товар</td>
-                                <td class="description"></td>
-                                <td class="price">Цена</td>
-                                <td class="quantity">Кол-во</td>
-                                <td class="total">Сумма</td>
-                                <td></td>
-                            </tr>
-                        </thead>
+                    <thead>
+                        <tr class="cart_menu">
+                            <td class="image">Товар</td>
+                            <td class="description"></td>
+                            <td class="price">Цена</td>
+                            <td class="quantity">Кол-во</td>
+                            <td class="total">Сумма</td>
+                            <td></td>
+                        </tr>
+                    </thead>
 
-                        @foreach (var (product, quantity) in Model.Cart.Items)
-                        {
-                            <tr>
-                                <td class="cart_product">
-                                    <a href=""><img src="~/images/shop/@product.ImageUrl" alt=""></a>
-                                </td>
-                                <td class="cart_description">
-                                    <h4><a href="">@product.Name</a></h4>
-                                    <p>Артикул: @product.Id</p>
-                                </td>
-                                <td class="cart_price">
-                                    <p>@product.Price.ToString("C")</p>
-                                </td>
-                                <td class="cart_quantity">
-                                    <div class="cart_quantity_button">
-                                        <a class="cart_quantity_up" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id"> + </a>
-                                        <input class="cart_quantity_input" type="text" name="quantity" value="@quantity" autocomplete="off" size="2">
-                                        <a class="cart_quantity_down" asp-controller="Cart" asp-action="Decrement" asp-route-id="@product.Id"> - </a>
-                                    </div>
-                                </td>
-                                <td class="cart_total">
-                                    <p class="cart_total_price">@((product.Price * quantity).ToString("C"))</p>
-                                </td>
-                                <td class="cart_delete">
-                                    <a class="cart_quantity_delete" asp-controller="Cart" asp-action="Delete" asp-route-id="@product.Id"><i class="fa fa-times"></i></a>
-                                </td>
-                            </tr>
-                        }
-                    
+                    @foreach (var (product, quantity) in Model.Cart.Items)
+                    {
+                        <tr>
+                            <td class="cart_product">
+                                <a href=""><img src="~/images/shop/@product.ImageUrl" alt=""></a>
+                            </td>
+                            <td class="cart_description">
+                                <h4><a href="">@product.Name</a></h4>
+                                <p>Артикул: @product.Id</p>
+                            </td>
+                            <td class="cart_price">
+                                <p>@product.Price.ToString("C")</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+                                    <a class="cart_quantity_up" asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id"> + </a>
+                                    <input class="cart_quantity_input" type="text" name="quantity" value="@quantity" autocomplete="off" size="2">
+                                    <a class="cart_quantity_down" asp-controller="Cart" asp-action="Decrement" asp-route-id="@product.Id"> - </a>
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">@((product.Price * quantity).ToString("C"))</p>
+                            </td>
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete" asp-controller="Cart" asp-action="Delete" asp-route-id="@product.Id"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    }
+
                     </tbody>
                 </table>
             }
             else
             {
                 <div class="text-center"><h3>Корзина пуста</h3></div>
-            }                                
+            }
         </div>
-    </section> <!--/#cart_items-->
+</section> <!--/#cart_items-->
 
+@if (@Model.Cart.Items.Any())
+{
     <section id="do_action">
-        <div class="container">
-            <div class="heading">
-                <h3>What would you like to do next?</h3>
-                <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-            </div>
-            <partial name="Partial/_CheckOut" model="Model.Order"
-                     view-data="@(new ViewDataDictionary(ViewData) { { "TotalPrice", Model.Cart.TotalPrice } })"/>
+        <div class="container">            
+            <partial name="Partial/_CheckOut" model="Model.Order" view-data="@(new ViewDataDictionary(ViewData) { { "TotalPrice", Model.Cart.TotalPrice } })" />            
         </div>
     </section><!--/#do_action-->
+}
