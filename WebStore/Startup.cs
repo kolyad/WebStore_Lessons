@@ -63,9 +63,24 @@ namespace WebStore
 
             });
 
-            services.AddDbContext<WebStoreDb>(opt =>
-                opt.UseSqlServer(_configuration.GetConnectionString("Default"))
-                   .UseLazyLoadingProxies());
+            var connStr = _configuration["ConnectionString"];
+
+            switch (connStr)
+            {
+                case "SqlServer":
+                    services.AddDbContext<WebStoreDb>(opt =>
+                        opt.UseSqlServer(_configuration.GetConnectionString(connStr))
+                        .UseLazyLoadingProxies());
+                    break;
+
+                case "Sqlite":
+                    services.AddDbContext<WebStoreDb>(opt =>
+                        opt.UseSqlite(_configuration.GetConnectionString(connStr), o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+                    break;
+
+                default:
+                    throw new Exception($"Неизвестная строка подключения: {connStr}");                    
+            }
 
             services.AddTransient<WebStoreDbInitializer>();
 

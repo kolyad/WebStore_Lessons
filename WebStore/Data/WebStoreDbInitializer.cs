@@ -71,6 +71,9 @@ namespace WebStore.Data
             _logger.LogInformation("Начало инициализации товаров");
 
 
+
+
+
             if (!_db.Sections.Any())
             {
                 _logger.LogInformation("Добавление секций");
@@ -114,6 +117,10 @@ namespace WebStore.Data
 
                 _db.Database.CommitTransaction();
             }
+
+
+
+
             _logger.LogInformation("Товары успешно добавлены в БД");
 
             _logger.LogInformation("Инициализация товаров выполнена успешно");
