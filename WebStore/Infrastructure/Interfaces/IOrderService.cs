@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
 using WebStore.ViewModels;
 
@@ -12,5 +13,7 @@ namespace WebStore.Infrastructure.Interfaces
         Task<Order> GetOrderByIdAsync(int id);
 
         Task<Order> CreatOrderAsync(string userName, CartViewModel cartModel, OrderViewModel orderModel);
+
+        Task<IEnumerable<Product>> GetUsedProductsAsync();
     }
 }

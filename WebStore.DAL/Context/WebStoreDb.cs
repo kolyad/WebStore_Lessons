@@ -16,6 +16,8 @@ namespace WebStore.DAL.Context
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         public WebStoreDb(DbContextOptions options) : base(options) { }
     }
 }
