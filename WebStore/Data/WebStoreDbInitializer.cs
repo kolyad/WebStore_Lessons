@@ -67,59 +67,72 @@ namespace WebStore.Data
             {
                 _logger.LogInformation("Инициализации базы товарами не требуется");
                 return;
+            }            
+
+            var products_sections = TestData.Sections.Join(
+                TestData.Products,
+                section => section.Id,
+                product => product.SectionId,
+                (section, product) => (section, product));
+
+            foreach (var (section, product) in products_sections)
+            {
+                section.Products.Add(product);
             }
+
+            var products_brands = TestData.Brands.Join(
+                TestData.Products,
+                brand => brand.Id,
+                product => product.BrandId,
+                (brand, product) => (brand, product));
+
+            foreach (var (brand, product) in products_brands)
+            {
+                brand.Products.Add(product);
+            }
+
+            var sections_sections = TestData.Sections.Join(
+                TestData.Sections,
+                parent => parent.Id,
+                child => child.ParentId,
+                (parent, child) => (parent, child));
+
+            foreach (var (parent, child) in sections_sections)
+            {
+                child.Parent = parent;
+            }
+
+
+            foreach (var x in TestData.Products)            
+            {
+                x.Id = 0;
+                x.SectionId = 0;
+                x.BrandId = null;
+            }
+
+            foreach (var x in TestData.Sections)            
+            {
+                x.Id = 0;
+                x.ParentId = null;                
+            }
+            
+            foreach (var x in TestData.Brands)            
+            {
+                x.Id = 0;                
+            }
+
+
             _logger.LogInformation("Начало инициализации товаров");
 
-
-
-
-
-            if (!_db.Sections.Any())
-            {
-                _logger.LogInformation("Добавление секций");
-                using (_db.Database.BeginTransaction())
-                {
-                    _db.Sections.AddRange(TestData.Sections);
-
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
-                    _db.SaveChanges();
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
-
-                    _db.Database.CommitTransaction();
-                }
-                _logger.LogInformation("Cекции успешно добавлены в БД");
-            }
-
-            if (!_db.Brands.Any())
-            {
-                _logger.LogInformation("Добавление брендов");
-                using (_db.Database.BeginTransaction())
-                {
-                    _db.Brands.AddRange(TestData.Brands);
-
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
-                    _db.SaveChanges();
-                    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
-
-                    _db.Database.CommitTransaction();
-                }
-                _logger.LogInformation("Бренды успешно добавлены в БД");
-            }
-
-            _logger.LogInformation("Добавление товаров");
             using (_db.Database.BeginTransaction())
             {
                 _db.Products.AddRange(TestData.Products);
+                _db.Sections.AddRange(TestData.Sections);
+                _db.Brands.AddRange(TestData.Brands);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
                 _db.SaveChanges();
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
-
                 _db.Database.CommitTransaction();
             }
-
-
-
 
             _logger.LogInformation("Товары успешно добавлены в БД");
 
