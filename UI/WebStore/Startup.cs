@@ -13,6 +13,8 @@ using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSql;
+using WebStore.Clients.Values;
+using WebStore.Interfaces.TestAPI;
 
 namespace WebStore
 {
@@ -91,6 +93,8 @@ namespace WebStore
             services.AddTransient<ICartService, InCookiesCartService>();
 
             services.AddTransient<IOrderService, SqlOrderService>();
+
+            services.AddTransient<IValuesService, ValuesClient>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
