@@ -1,8 +1,8 @@
 ﻿@model WebStore.Models.Employee
 
-@{
+@{ 
     Layout = "_LayoutEmployees";
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Details"; 
 }
 
 
@@ -46,11 +46,12 @@
 </table>
 <hr />
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редактировать</a>
-<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+@if (User.IsInRole(Role.Administrator))
+{
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редактировать</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+}
 
 <hr />
 <a asp-controller="Employees" asp-action="Index">Назад к списку</a>
 <hr />
-
-
