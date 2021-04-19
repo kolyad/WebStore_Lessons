@@ -86,7 +86,7 @@ namespace WebStore.Data
             new Brand { Id = 7, Name = "Rosch creative culture", Order = 6 },
         };
 
-        public static IEnumerable<Product> Products { get; } = new[]
+        public static List<Product> Products { get; } = new List<Product>()
         {
             new Product { Id = 1, Name = "Белое платье", Price = 1025, ImageUrl = "product1.jpg", Order = 0, SectionId = 2, BrandId = 1 },
             new Product { Id = 2, Name = "Розовое платье", Price = 1025, ImageUrl = "product2.jpg", Order = 1, SectionId = 2, BrandId = 1 },
