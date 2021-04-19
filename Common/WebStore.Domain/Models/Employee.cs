@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebStore.Models
+namespace WebStore.Domain.Models
 {
     /// <summary>
     /// Сотрудник
@@ -35,7 +35,7 @@ namespace WebStore.Models
             get
             {
                 var now = DateTime.Now;
-                
+
                 var age = now.Year - BirthDate.Year;
 
                 if (age <= 0)
@@ -43,8 +43,8 @@ namespace WebStore.Models
                     return 0;
                 }
 
-                if ((now.Month < BirthDate.Month) ||
-                    (now.Month == BirthDate.Month && now.Day < BirthDate.Day))
+                if (now.Month < BirthDate.Month ||
+                    now.Month == BirthDate.Month && now.Day < BirthDate.Day)
                 {
                     age--;
                 }
