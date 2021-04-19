@@ -6,13 +6,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using WebStore.DAL.Context;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Services;
-using WebStore.Data;
-using WebStore.Infrastructure.Services.InSql;
 using WebStore.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
-using WebStore.Infrastructure.Services.InCookies;
+using WebStore.Services.Data;
+using WebStore.Services.InCookies;
+using WebStore.Services.InMemory;
+using WebStore.Services.InSql;
 
 namespace WebStore
 {

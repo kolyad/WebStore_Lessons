@@ -2,8 +2,8 @@
 using System.Linq;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Mapping;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Controllers
 {

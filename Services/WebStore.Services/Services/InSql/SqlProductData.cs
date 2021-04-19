@@ -5,7 +5,7 @@ using WebStore.DAL.Context;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
 
-namespace WebStore.Infrastructure.Services.InSql
+namespace WebStore.Services.InSql
 {
     public class SqlProductData : IProductData
     {
@@ -72,8 +72,8 @@ namespace WebStore.Infrastructure.Services.InSql
                 entity.Name = product.Name;
                 entity.Order = product.Order;
                 entity.SectionId = product.SectionId;
-                entity.BrandId = product.BrandId;                
-                entity.ImageUrl = product.ImageUrl;                
+                entity.BrandId = product.BrandId;
+                entity.ImageUrl = product.ImageUrl;
 
                 _db.Products.Update(entity);
 

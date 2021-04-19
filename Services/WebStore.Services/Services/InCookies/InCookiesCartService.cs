@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 using System.Linq;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Mapping;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
-namespace WebStore.Infrastructure.Services.InCookies
+namespace WebStore.Services.InCookies
 {
     public class InCookiesCartService : ICartService
     {
@@ -84,7 +84,7 @@ namespace WebStore.Infrastructure.Services.InCookies
             {
                 item.Quantity--;
             }
-            
+
             if (item.Quantity == 0)
             {
                 cart.Items.Remove(item);
@@ -110,7 +110,7 @@ namespace WebStore.Infrastructure.Services.InCookies
 
         public void Clear()
         {
-            var cart = Cart;           
+            var cart = Cart;
 
             cart.Items.Clear();
 

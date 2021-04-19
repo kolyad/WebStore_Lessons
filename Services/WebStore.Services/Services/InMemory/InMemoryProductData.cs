@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WebStore.Data;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Services.Data;
 
-namespace WebStore.Infrastructure.Services
+namespace WebStore.Services.InMemory
 {
     public class InMemoryProductData : IProductData
     {
@@ -51,7 +51,7 @@ namespace WebStore.Infrastructure.Services
                 entity.Section = product.Section;
                 entity.BrandId = product.BrandId;
                 entity.Brand = product.Brand;
-                entity.ImageUrl = product.ImageUrl;                
+                entity.ImageUrl = product.ImageUrl;
             }
         }
     }

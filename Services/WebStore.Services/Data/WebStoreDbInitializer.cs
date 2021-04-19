@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 
-namespace WebStore.Data
+namespace WebStore.Services.Data
 {
     public class WebStoreDbInitializer
     {
@@ -67,7 +67,7 @@ namespace WebStore.Data
             {
                 _logger.LogInformation("Инициализации базы товарами не требуется");
                 return;
-            }            
+            }
 
             var products_sections = TestData.Sections.Join(
                 TestData.Products,
@@ -103,22 +103,22 @@ namespace WebStore.Data
             }
 
 
-            foreach (var x in TestData.Products)            
+            foreach (var x in TestData.Products)
             {
                 x.Id = 0;
                 x.SectionId = 0;
                 x.BrandId = null;
             }
 
-            foreach (var x in TestData.Sections)            
+            foreach (var x in TestData.Sections)
             {
                 x.Id = 0;
-                x.ParentId = null;                
+                x.ParentId = null;
             }
-            
-            foreach (var x in TestData.Brands)            
+
+            foreach (var x in TestData.Brands)
             {
-                x.Id = 0;                
+                x.Id = 0;
             }
 
 
