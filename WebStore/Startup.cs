@@ -43,13 +43,13 @@ namespace WebStore
 #endif
                 opt.User.RequireUniqueEmail = false;
                 opt.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                
+
                 opt.Lockout.AllowedForNewUsers = false;
                 opt.Lockout.MaxFailedAccessAttempts = 10;
                 opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
             });
 
-            services.ConfigureApplicationCookie(opt => 
+            services.ConfigureApplicationCookie(opt =>
             {
                 opt.Cookie.Name = "WebStore.GB";
                 opt.Cookie.HttpOnly = true;
@@ -63,7 +63,24 @@ namespace WebStore
 
             });
 
-            services.AddDbContext<WebStoreDb>(opt => opt.UseSqlServer(_configuration.GetConnectionString("Default")));
+            var connStr = _configuration["ConnectionString"];
+
+            switch (connStr)
+            {
+                case "SqlServer":
+                    services.AddDbContext<WebStoreDb>(opt =>
+                        opt.UseSqlServer(_configuration.GetConnectionString(connStr))
+                        .UseLazyLoadingProxies());
+                    break;
+
+                case "Sqlite":
+                    services.AddDbContext<WebStoreDb>(opt =>
+                        opt.UseSqlite(_configuration.GetConnectionString(connStr), o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+                    break;
+
+                default:
+                    throw new Exception($"Неизвестная строка подключения: {connStr}");                    
+            }
 
             services.AddTransient<WebStoreDbInitializer>();
 
@@ -72,6 +89,8 @@ namespace WebStore
             services.AddTransient<IProductData, SqlProductData>();
 
             services.AddTransient<ICartService, InCookiesCartService>();
+
+            services.AddTransient<IOrderService, SqlOrderService>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
@@ -98,11 +117,14 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                // Русский комментарий
-                // Русский комментарий
                 endpoints.MapControllerRoute(
-                    "default",
-                    "{controller=Home}/{action=Index}/{Id?}");
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    );
+
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{Id?}");
             });
         }
     }

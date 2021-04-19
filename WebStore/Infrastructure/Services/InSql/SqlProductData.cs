@@ -22,7 +22,9 @@ namespace WebStore.Infrastructure.Services.InSql
 
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null)
         {
-            IQueryable<Product> productQuery = _db.Products;
+            IQueryable<Product> productQuery = _db.Products
+                .Include(i => i.Brand)
+                .Include(i => i.Section);
 
             if (productFilter?.Ids?.Length > 0)
             {
@@ -50,6 +52,33 @@ namespace WebStore.Infrastructure.Services.InSql
                 .Include(p => p.Brand)
                 .Include(p => p.Section)
                 .FirstOrDefault(x => x.Id == id);
+        }
+
+        public void Delete(int id)
+        {
+            var product = _db.Products.FirstOrDefault(x => x.Id == id);
+            if (product is object)
+            {
+                _db.Products.Remove(product);
+                _db.SaveChanges();
+            }
+        }
+
+        public void Update(Product product)
+        {
+            var entity = _db.Products.FirstOrDefault(x => x.Id == product.Id);
+            if (entity is object)
+            {
+                entity.Name = product.Name;
+                entity.Order = product.Order;
+                entity.SectionId = product.SectionId;
+                entity.BrandId = product.BrandId;                
+                entity.ImageUrl = product.ImageUrl;                
+
+                _db.Products.Update(entity);
+
+                _db.SaveChanges();
+            }
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
@@ -16,7 +14,7 @@ namespace WebStore.Infrastructure.Services
 
         public IEnumerable<Product> GetProducts(ProductFilter productFilter = null)
         {
-            var productQuery = TestData.Products;
+            var productQuery = TestData.Products.AsEnumerable();
 
             if (productFilter?.SectionId is { } sectionId)
             {
@@ -32,5 +30,29 @@ namespace WebStore.Infrastructure.Services
         }
 
         public Product GetProductById(int id) => TestData.Products.FirstOrDefault(x => x.Id == id);
+
+        public void Delete(int id)
+        {
+            var product = TestData.Products.FirstOrDefault(x => x.Id == id);
+            if (product is object)
+            {
+                TestData.Products.Remove(product);
+            }
+        }
+
+        public void Update(Product product)
+        {
+            var entity = TestData.Products.FirstOrDefault(x => x.Id == product.Id);
+            if (entity is object)
+            {
+                entity.Name = product.Name;
+                entity.Order = product.Order;
+                entity.SectionId = product.SectionId;
+                entity.Section = product.Section;
+                entity.BrandId = product.BrandId;
+                entity.Brand = product.Brand;
+                entity.ImageUrl = product.ImageUrl;                
+            }
+        }
     }
 }
