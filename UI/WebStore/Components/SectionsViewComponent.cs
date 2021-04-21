@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Components
 {
@@ -17,7 +18,7 @@ namespace WebStore.Components
 
         public IViewComponentResult Invoke()
         {
-            var sections = _productData.GetSections();
+            var sections = _productData.GetSections().FromDto();
 
             var parent_sections = sections.Where(x => !x.ParentId.HasValue);
 

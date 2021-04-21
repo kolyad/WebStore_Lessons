@@ -2,6 +2,7 @@
 using System.Linq;
 using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Components
 {
@@ -22,7 +23,8 @@ namespace WebStore.Components
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    ProductsCount = s.Products.Count()
+                    //TODO 
+                    ProductsCount = 0, //s.Products.Count()
                 });
 
             return View(brand_views);

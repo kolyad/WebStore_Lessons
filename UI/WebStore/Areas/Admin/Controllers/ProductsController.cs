@@ -7,6 +7,7 @@ using WebStore.Areas.Admin.ViewModels;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Areas.Admin.Controllers
 {
@@ -26,19 +27,23 @@ namespace WebStore.Areas.Admin.Controllers
         {
             var usedProducts = await _orderService.GetUsedProductsAsync();
 
-            return View(_productData.GetProducts().Select(s => new ProductEditViewModel 
-            { 
-                Id = s.Id,
-                Name = s.Name,
-                Order = s.Order,
-                SectionId = s.SectionId,
-                SectionName = s.Section?.Name,
-                BrandId = s.BrandId,
-                BrandName = s.Brand?.Name,
-                ImageUrl = s.ImageUrl,
-                Price = s.Price,
-                CanDelete = !usedProducts.Contains(s)
-            }));
+            return View(
+                _productData
+                .GetProducts()
+                .FromDto()
+                .Select(s => new ProductEditViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Order = s.Order,
+                    SectionId = s.SectionId,
+                    SectionName = s.Section?.Name,
+                    BrandId = s.BrandId,
+                    BrandName = s.Brand?.Name,
+                    ImageUrl = s.ImageUrl,
+                    Price = s.Price,
+                    CanDelete = !usedProducts.Contains(s)
+                }));
         }
 
         public IActionResult Edit(int id)
@@ -51,20 +56,20 @@ namespace WebStore.Areas.Admin.Controllers
             return View(product);
         }
 
-        [HttpPost]        
+        [HttpPost]
         public IActionResult Edit(Product model)
         {
             _ = model ?? throw new ArgumentNullException();
 
             if (model.Id > 0)
             {
-                _productData.Update(model);
+                _productData.Update(model.ToDto());
             }
             else
             {
                 return NotFound();
             }
-            
+
             return RedirectToAction("Index");
         }
 
@@ -78,7 +83,7 @@ namespace WebStore.Areas.Admin.Controllers
             return View(product);
         }
 
-        [HttpPost]        
+        [HttpPost]
         public IActionResult DeleteConfirmed(int Id)
         {
             _productData.Delete(Id);
