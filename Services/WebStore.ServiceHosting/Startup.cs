@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
 using WebStore.Services.InMemory;
 using WebStore.Services.InSql;

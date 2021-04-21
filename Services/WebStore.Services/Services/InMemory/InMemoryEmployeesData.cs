@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain.Models;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
 
 namespace WebStore.Services.InMemory
@@ -20,6 +20,14 @@ namespace WebStore.Services.InMemory
 
         public Employee Get(int id) => _employees.FirstOrDefault(e => e.Id == id);
 
+        public Employee GetByName(string lastName, string firstName, string patronymic)
+        {
+            return _employees
+                .FirstOrDefault(x => x.LastName == lastName &&
+                                     x.FirstName == firstName &&
+                                     x.Patronymic == patronymic);
+        }
+
         public int Add(Employee employee)
         {
             _ = employee ?? throw new ArgumentNullException();
@@ -32,6 +40,19 @@ namespace WebStore.Services.InMemory
             employee.Id = ++_currenctMaxId;
             _employees.Add(employee);
             return employee.Id;
+        }
+
+        public Employee Add(string lastName, string firstName, string patronymic, int age)
+        {
+            var employee = new Employee
+            {
+                Id = ++_currenctMaxId,
+                LastName = lastName,
+                FirstName = firstName,
+                Patronymic = patronymic,
+            };
+            _employees.Add(employee);
+            return employee;
         }
 
         public void Update(Employee employee)
@@ -66,5 +87,6 @@ namespace WebStore.Services.InMemory
             }
             return _employees.Remove(db_item);
         }
+
     }
 }
