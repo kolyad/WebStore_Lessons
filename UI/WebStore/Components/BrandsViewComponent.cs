@@ -24,7 +24,7 @@ namespace WebStore.Components
                     Id = s.Id,
                     Name = s.Name,
                     //TODO 
-                    ProductsCount = 0, //s.Products.Count()
+                    ProductsCount = 100, //s.Products.Count()
                 });
 
             return View(brand_views);
