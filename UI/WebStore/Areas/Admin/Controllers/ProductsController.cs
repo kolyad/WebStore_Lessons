@@ -25,7 +25,7 @@ namespace WebStore.Areas.Admin.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            var usedProducts = await _orderService.GetUsedProductsAsync();
+            var usedProducts = (await _orderService.GetUsedProductsAsync()).FromDto();
 
             return View(
                 _productData

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
+using WebStore.Domain.Dto;
+using System.Linq;
 
 namespace WebStore.Controllers
 {
@@ -57,14 +59,28 @@ namespace WebStore.Controllers
                 {
                     Cart = _cartService.GetViewModel(),
                     Order = orderModel
-                });
+                }); 
             }
+
+            //var order = await orderService.CreatOrderAsync(
+            //    User.Identity.Name,
+            //    _cartService.GetViewModel(),
+            //    orderModel
+            //    );
+
+            var createOrderModel = new CreateOrderModel
+            {
+                Order = orderModel,
+                Items = _cartService.GetViewModel().Items.Select(item => new OrderItemDto
+                {
+                    Price = item.Product.Price,
+                    Quantity = item.Quantity,
+                }).ToList()
+            };
 
             var order = await orderService.CreatOrderAsync(
                 User.Identity.Name,
-                _cartService.GetViewModel(),
-                orderModel
-                );
+                createOrderModel);
 
             _cartService.Clear();
 
