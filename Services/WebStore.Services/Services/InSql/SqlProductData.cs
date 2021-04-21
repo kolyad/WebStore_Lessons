@@ -20,7 +20,17 @@ namespace WebStore.Services.InSql
 
         public IEnumerable<SectionDto> GetSections() => _db.Sections.Include(s => s.Products).ToDto();
 
+        public SectionDto GetSectionById(int id)
+        {
+            return _db.Sections.Include(s => s.Products).FirstOrDefault(x => x.Id == id).ToDto();
+        }
+
         public IEnumerable<BrandDto> GetBrands() => _db.Brands.Include(s => s.Products).ToDto();
+
+        public BrandDto GetBrandById(int id)
+        {
+            return _db.Brands.Include(s => s.Products).FirstOrDefault(x => x.Id == id).ToDto();
+        }
 
         public IEnumerable<ProductDto> GetProducts(ProductFilter productFilter = null)
         {

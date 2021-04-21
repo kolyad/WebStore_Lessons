@@ -18,9 +18,19 @@ namespace WebStore.Clients.Clients
             return Get<IEnumerable<SectionDto>>($"{Address}/sections");
         }
 
+        public SectionDto GetSectionById(int id)
+        {
+            return Get<SectionDto>($"{Address}/sections/{id}");
+        }
+
         public IEnumerable<BrandDto> GetBrands()
         {
             return Get<IEnumerable<BrandDto>>($"{Address}/brands");
+        }
+
+        public BrandDto GetBrandById(int id)
+        {
+            return Get<BrandDto>($"{Address}/brands/{id}");
         }
 
         public IEnumerable<ProductDto> GetProducts(ProductFilter productFilter = null)
