@@ -34,11 +34,12 @@ namespace WebStore.ServiceHosting.Controllers
         }
 
         [HttpPost("{userName}")]
-        public Task<OrderDto> CreatOrderAsync(string userName, [FromBody] CreateOrderModel createOrderModel)
+        public Task<OrderDto> CreateOrderAsync(string userName, [FromBody] CreateOrderModel createOrderModel)
         {
-            return _orderService.CreatOrderAsync(userName, createOrderModel);
+            return _orderService.CreateOrderAsync(userName, createOrderModel);
         }
 
+        [HttpGet("usedproducts")]
         public Task<IEnumerable<ProductDto>> GetUsedProductsAsync()
         {
             return _orderService.GetUsedProductsAsync();

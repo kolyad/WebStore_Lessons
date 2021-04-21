@@ -2,7 +2,7 @@
 {
     public class OrderItemDto
     {
-        public int Id { get; set; }
+        public int Id { get; set; }        
 
         public ProductDto Product { get; set; }
 

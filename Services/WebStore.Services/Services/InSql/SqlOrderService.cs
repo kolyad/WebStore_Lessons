@@ -24,7 +24,7 @@ namespace WebStore.Services.InSql
             _userManager = userManager;
         }
 
-        public async Task<OrderDto> CreatOrderAsync(string userName, CreateOrderModel orderModel)
+        public async Task<OrderDto> CreateOrderAsync(string userName, CreateOrderModel orderModel)
         {
             var user = await _userManager.FindByNameAsync(userName);
             _ = user ?? throw new InvalidOperationException($"Пользователь {userName} не найден в БД");
@@ -58,7 +58,7 @@ namespace WebStore.Services.InSql
 
             foreach (var item in orderModel.Items)
             {
-                var product = await _db.Products.FindAsync(item.Id);
+                var product = await _db.Products.FindAsync(item.Product.Id);
                 if (product is null)
                 {
                     continue;

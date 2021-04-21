@@ -62,23 +62,24 @@ namespace WebStore.Controllers
                 }); 
             }
 
-            //var order = await orderService.CreatOrderAsync(
-            //    User.Identity.Name,
-            //    _cartService.GetViewModel(),
-            //    orderModel
-            //    );
-
             var createOrderModel = new CreateOrderModel
             {
                 Order = orderModel,
                 Items = _cartService.GetViewModel().Items.Select(item => new OrderItemDto
                 {
+                    Product = new ProductDto 
+                    {   
+                        Id = item.Product.Id,
+                        Name = item.Product.Name,
+                        Price = item.Product.Price,
+                        ImageUrl = item.Product.ImageUrl                        
+                    },
                     Price = item.Product.Price,
                     Quantity = item.Quantity,
                 }).ToList()
             };
 
-            var order = await orderService.CreatOrderAsync(
+            var order = await orderService.CreateOrderAsync(
                 User.Identity.Name,
                 createOrderModel);
 

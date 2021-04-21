@@ -95,7 +95,7 @@ namespace WebStore
 
             services.AddTransient<ICartService, InCookiesCartService>();
 
-            services.AddTransient<IOrderService, SqlOrderService>();
+            services.AddTransient<IOrderService, OrdersClient>();
 
             services.AddTransient<IValuesService, ValuesClient>();
 
