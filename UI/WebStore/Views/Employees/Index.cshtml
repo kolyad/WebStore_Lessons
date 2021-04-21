@@ -29,8 +29,8 @@
                     @if (User.IsInRole(Role.Administrator))
                     {
                         @:|
-                        <a asp-action="Edit" asp-route-id="employee.Id"><i class="fa fa-edit"></i> </a>@:|
-                        <a asp-action="Delete" asp-route-id="employee.Id"><i class="fa fa-trash-o"></i> </a>
+                        <a asp-action="Edit" asp-route-id="@employee.Id"><i class="fa fa-edit"></i> </a>@:|
+                        <a asp-action="Delete" asp-route-id="@employee.Id"><i class="fa fa-trash-o"></i> </a>
                     }
                 </td>
             </tr>

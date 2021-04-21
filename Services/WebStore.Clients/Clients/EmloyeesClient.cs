@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Net.Http;
 using WebStore.Clients.Base;
@@ -10,7 +11,14 @@ namespace WebStore.Clients.Clients
 {
     public class EmloyeesClient : BaseClient, IEmployeesData
     {
-        public EmloyeesClient(IConfiguration configuration) : base(configuration, WebApi.Employees) { }
+        private readonly ILogger<EmloyeesClient> _logger;
+
+        public EmloyeesClient(
+            IConfiguration configuration,
+            ILogger<EmloyeesClient> logger) : base(configuration, WebApi.Employees)
+        {
+            _logger = logger;
+        }
 
         public IEnumerable<Employee> Get() => Get<IEnumerable<Employee>>(Address);
 
@@ -19,21 +27,46 @@ namespace WebStore.Clients.Clients
         public Employee GetByName(string lastName, string firstName, string patronymic) =>
             Get<Employee>($"{Address}/employee?lastName={lastName}&firstName={firstName}&patronymic={patronymic}");
 
-        public int Add(Employee employee) => 
-            Post(Address, employee)
-            .Content
-            .ReadAsAsync<int>()
-            .Result;
+        public int Add(Employee employee)
+        {
+            _logger.LogInformation("Добавление нового сотрудника {0}", employee);
 
-        public Employee Add(string lastName, string firstName, string patronymic, int age) => 
-            Post($"{Address}/employee?lastName={lastName}&firstName={firstName}&patronymic={patronymic}", "")
-            .Content
-            .ReadAsAsync<Employee>()
-            .Result;
+            return Post(Address, employee)
+                .Content
+                .ReadAsAsync<int>()
+                .Result;
+        }
+
+        public Employee Add(string lastName, string firstName, string patronymic, int age)
+        {
+            _logger.LogInformation("Добавление нового сотрудника {0} {1} {2} {3} лет",
+               lastName, firstName, patronymic, age);
+
+            return Post($"{Address}/employee?lastName={lastName}&firstName={firstName}&patronymic={patronymic}", "")
+                .Content
+                .ReadAsAsync<Employee>()
+                .Result;
+        }
 
 
-        public void Update(Employee employee) => Put(Address, employee);
+        public void Update(Employee employee)
+        {
+            _logger.LogInformation("Редактирование сотрудника {0}", employee);
 
-        public bool Delete(int id) => Delete($"{Address}/{id}").IsSuccessStatusCode;
+            Put(Address, employee);
+        }
+
+
+        public bool Delete(int id)
+        {
+            _logger.LogInformation("Удаление сотрудника с Id {0} ...", id);
+
+            var result = Delete($"{Address}/{id}").IsSuccessStatusCode;
+
+            _logger.LogInformation("Удаление сотрудника с Id {0} - {1}", id,
+                result ? "выполнено" : "не найден");
+
+            return result;
+        }
     }
 }
