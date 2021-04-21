@@ -91,7 +91,7 @@ namespace WebStore
             //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IEmployeesData, EmloyeesClient>();
 
-            services.AddTransient<IProductData, SqlProductData>();
+            services.AddTransient<IProductData, ProductsClient>();
 
             services.AddTransient<ICartService, InCookiesCartService>();
 
