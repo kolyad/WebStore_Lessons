@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
 using WebStore.Services.Mapping;
 
@@ -32,6 +32,7 @@ namespace WebStore.Controllers
                 BrandId = brandId,
                 Products = products
                     .OrderBy(x => x.Order)
+                    .FromDto()
                     .ToView()
             });
         }
@@ -45,7 +46,7 @@ namespace WebStore.Controllers
                 return NotFound();
             }
 
-            return View(product.ToView());
+            return View(product.FromDto().ToView());
         }
     }
 }

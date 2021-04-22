@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
-using WebStore.Domain.Entities;
+using WebStore.Domain.Dto;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Domain.Entities.Orders;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Domain.ViewModels;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.InSql
 {
@@ -24,7 +24,7 @@ namespace WebStore.Services.InSql
             _userManager = userManager;
         }
 
-        public async Task<Order> CreatOrderAsync(string userName, CartViewModel cartModel, OrderViewModel orderModel)
+        public async Task<OrderDto> CreateOrderAsync(string userName, CreateOrderModel orderModel)
         {
             var user = await _userManager.FindByNameAsync(userName);
             _ = user ?? throw new InvalidOperationException($"Пользователь {userName} не найден в БД");
@@ -33,60 +33,82 @@ namespace WebStore.Services.InSql
 
             var order = new Order
             {
-                Name = orderModel.Name,
-                Address = orderModel.Address,
-                Phone = orderModel.Phone,
+                Name = orderModel.Order.Name,
+                Address = orderModel.Order.Address,
+                Phone = orderModel.Order.Phone,
                 User = user,
             };
 
-            var product_ids = cartModel.Items.Select(x => x.Product.Id).ToArray();
+            //var product_ids = cartModel.Items.Select(x => x.Product.Id).ToArray();
 
-            var cart_products = await _db.Products.Where(x => product_ids.Contains(x.Id)).ToArrayAsync();
+            //var cart_products = await _db.Products.Where(x => product_ids.Contains(x.Id)).ToArrayAsync();
 
-            order.Items = cartModel.Items.Join(
-                cart_products,
-                cart_item => cart_item.Product.Id,
-                product => product.Id,
-                (cart_item, product) => new OrderItem
+            //order.Items = cartModel.Items.Join(
+            //    cart_products,
+            //    cart_item => cart_item.Product.Id,
+            //    product => product.Id,
+            //    (cart_item, product) => new OrderItem
+            //    {
+            //        Order = order,
+            //        Product = product,
+            //        Price = product.Price,
+            //        Quantity = cart_item.Quantity
+            //    })
+            //    .ToArray();
+
+            foreach (var item in orderModel.Items)
+            {
+                var product = await _db.Products.FindAsync(item.Product.Id);
+                if (product is null)
+                {
+                    continue;
+                }
+
+                var orderItem = new OrderItem
                 {
                     Order = order,
-                    Product = product,
                     Price = product.Price,
-                    Quantity = cart_item.Quantity
-                })
-                .ToArray();
+                    Quantity = item.Quantity,
+                    Product = product,
+                };
+
+                order.Items.Add(orderItem);
+            }
 
             await _db.Orders.AddAsync(order);
 
             await _db.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            return order;
+            return order.ToDto();
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<OrderDto> GetOrderByIdAsync(int id)
         {
-            return await _db.Orders
+            return (await _db.Orders
                 .Include(x => x.User)
                 .Include(x => x.Items)
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id))
+                .ToDto();
         }
 
-        public async Task<IEnumerable<Product>> GetUsedProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetUsedProductsAsync()
         {
-            return await _db.OrderItems
+            return (await _db.OrderItems
                 .Select(x => x.Product)
                 .Distinct()
-                .ToArrayAsync();
+                .ToArrayAsync())
+                .ToDto();
         }
 
-        public async Task<IEnumerable<Order>> GetUserOrdersAsync(string userName)
+        public async Task<IEnumerable<OrderDto>> GetUserOrdersAsync(string userName)
         {
-            return await _db.Orders
+            return (await _db.Orders
                 .Include(x => x.User)
                 .Include(x => x.Items)
                 .Where(x => x.User.UserName == userName)
-                .ToArrayAsync();
+                .ToArrayAsync())
+                .Select(o => o.ToDto());
         }
     }
 }

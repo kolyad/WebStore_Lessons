@@ -1,4 +1,4 @@
-﻿@using WebStore.Infrastructure.Interfaces
+﻿@using WebStore.Interfaces.Services
 @using WebStore.Services.Mapping
 
 @inject IProductData _productData
@@ -7,6 +7,7 @@
                     .GetProducts()
                     .OrderBy(x => x.Order)
                     .Take(6)
+                    .FromDto()
                     .ToView(); 
 }
 <partial name="Partial/_Slider" />

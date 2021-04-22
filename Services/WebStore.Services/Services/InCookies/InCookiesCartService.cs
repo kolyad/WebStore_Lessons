@@ -2,9 +2,10 @@
 using Newtonsoft.Json;
 using System.Linq;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
 using WebStore.Services.Mapping;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Services.InCookies
 {
@@ -125,7 +126,7 @@ namespace WebStore.Services.InCookies
                 Ids = Cart.Items.Select(x => x.ProductId).ToArray()
             });
 
-            var productViewModels = products.ToView().ToDictionary(p => p.Id);
+            var productViewModels = products.FromDto().ToView().ToDictionary(p => p.Id);
 
             return new CartViewModel
             {

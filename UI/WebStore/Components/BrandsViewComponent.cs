@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using WebStore.Infrastructure.Interfaces;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.ViewModels;
+using WebStore.Interfaces.Services;
 
 namespace WebStore.Components
 {
@@ -21,8 +21,8 @@ namespace WebStore.Components
                 .Select(s => new BrandViewModel
                 {
                     Id = s.Id,
-                    Name = s.Name,
-                    ProductsCount = s.Products.Count()
+                    Name = s.Name,                    
+                    ProductsCount = s.ProductsCount
                 });
 
             return View(brand_views);

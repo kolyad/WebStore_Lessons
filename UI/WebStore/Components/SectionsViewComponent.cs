@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Services;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Components
 {
@@ -27,7 +28,7 @@ namespace WebStore.Components
                     Id = x.Id,
                     Name = x.Name,
                     Order = x.Order,
-                    ProductsCount = x.Products.Count()
+                    ProductsCount = x.ProductsCount
                 })
                 .ToList();
 
@@ -43,7 +44,7 @@ namespace WebStore.Components
                         Id = child.Id,
                         Name = child.Name,
                         Order = child.Order,
-                        ProductsCount = child.Products.Count(),
+                        ProductsCount = child.ProductsCount,
                         Parent = parent_section
                     });
                 }

@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebStore.Domain.Entities;
-using WebStore.Domain.Entities.Orders;
-using WebStore.Domain.ViewModels;
+using WebStore.Domain.Dto;
 
-namespace WebStore.Infrastructure.Interfaces
+namespace WebStore.Interfaces.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<Order>> GetUserOrdersAsync(string userName);
+        Task<IEnumerable<OrderDto>> GetUserOrdersAsync(string userName);
 
-        Task<Order> GetOrderByIdAsync(int id);
+        Task<OrderDto> GetOrderByIdAsync(int id);
 
-        Task<Order> CreatOrderAsync(string userName, CartViewModel cartModel, OrderViewModel orderModel);
+        Task<OrderDto> CreateOrderAsync(string userName, CreateOrderModel createOrderModel);
 
-        Task<IEnumerable<Product>> GetUsedProductsAsync();
+        Task<IEnumerable<ProductDto>> GetUsedProductsAsync();
     }
 }

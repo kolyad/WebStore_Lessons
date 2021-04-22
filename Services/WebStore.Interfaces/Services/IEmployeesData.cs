@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WebStore.Domain.Models;
 
-namespace WebStore.Infrastructure.Interfaces
+namespace WebStore.Interfaces.Services
 {
     public interface IEmployeesData
     {
@@ -9,7 +9,11 @@ namespace WebStore.Infrastructure.Interfaces
 
         Employee Get(int id);
 
+        Employee GetByName(string lastName, string firstName, string patronymic);
+
         int Add(Employee employee);
+
+        Employee Add(string lastName, string firstName, string patronymic, int age);
 
         void Update(Employee employee);
 

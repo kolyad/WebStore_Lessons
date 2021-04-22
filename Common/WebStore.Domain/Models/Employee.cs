@@ -11,22 +11,27 @@ namespace WebStore.Domain.Models
         /// Id сотрудника
         /// </summary>
         public int Id { get; set; }
+
         /// <summary>
         /// Фамилия сотрудника
         /// </summary>
         public string FirstName { get; set; }
+
         /// <summary>
         /// Имя сотрудника
         /// </summary>
         public string LastName { get; set; }
+
         /// <summary>
         /// Отчество сотрудника
         /// </summary>
         public string Patronymic { get; set; }
+
         /// <summary>
         /// Дата рождения сотрудника
         /// </summary>
         public DateTime BirthDate { get; set; }
+
         /// <summary>
         /// Возраст сотрудника
         /// </summary>
@@ -52,13 +57,18 @@ namespace WebStore.Domain.Models
                 return age;
             }
         }
+
         /// <summary>
         /// Дата найма сотрудника
         /// </summary>
         public DateTime HireDate { get; set; }
+
         /// <summary>
         /// Город проживания сотрудинка
         /// </summary>
         public string City { get; set; }
+
+        public override string ToString() => $"{LastName} {FirstName} {Patronymic} {Age} лет";
     }
 }
+
