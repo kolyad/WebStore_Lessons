@@ -9,5 +9,7 @@
         public int Order { get; set; }
 
         public int? ParentId { get; set; }
+
+        public int ProductsCount { get; set; }
     }
 }

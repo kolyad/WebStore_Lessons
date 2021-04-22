@@ -13,7 +13,8 @@ namespace WebStore.Services.Mapping
             {
                 Id = brand.Id,
                 Name = brand.Name,
-                Order = brand.Order
+                Order = brand.Order,
+                ProductsCount = brand.Products.Count()
             };        
         
         public static Brand FromDto(this BrandDto brand) => brand is null

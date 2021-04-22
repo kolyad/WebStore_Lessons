@@ -18,7 +18,7 @@ namespace WebStore.Components
 
         public IViewComponentResult Invoke()
         {
-            var sections = _productData.GetSections().FromDto();
+            var sections = _productData.GetSections();
 
             var parent_sections = sections.Where(x => !x.ParentId.HasValue);
 
@@ -28,7 +28,7 @@ namespace WebStore.Components
                     Id = x.Id,
                     Name = x.Name,
                     Order = x.Order,
-                    ProductsCount = 100, // x.Products.Count()
+                    ProductsCount = x.ProductsCount
                 })
                 .ToList();
 
@@ -44,7 +44,7 @@ namespace WebStore.Components
                         Id = child.Id,
                         Name = child.Name,
                         Order = child.Order,
-                        ProductsCount = child.Products.Count(),
+                        ProductsCount = child.ProductsCount,
                         Parent = parent_section
                     });
                 }

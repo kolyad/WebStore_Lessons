@@ -14,9 +14,7 @@ namespace WebStore.Clients.Clients
 {
     public class OrdersClient : BaseClient, IOrderService
     {
-        public OrdersClient(IConfiguration configuration) : base(configuration, WebApi.Orders)
-        {
-        }
+        public OrdersClient(IConfiguration configuration) : base(configuration, WebApi.Orders) { }
 
         public async Task<IEnumerable<OrderDto>> GetUserOrdersAsync(string userName)
         {

@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using WebStore.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.Dto;
 using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
-using WebStore.Domain.Dto;
-using System.Linq;
 
 namespace WebStore.Controllers
 {
@@ -59,7 +57,7 @@ namespace WebStore.Controllers
                 {
                     Cart = _cartService.GetViewModel(),
                     Order = orderModel
-                }); 
+                });
             }
 
             var createOrderModel = new CreateOrderModel
@@ -67,12 +65,12 @@ namespace WebStore.Controllers
                 Order = orderModel,
                 Items = _cartService.GetViewModel().Items.Select(item => new OrderItemDto
                 {
-                    Product = new ProductDto 
-                    {   
+                    Product = new ProductDto
+                    {
                         Id = item.Product.Id,
                         Name = item.Product.Name,
                         Price = item.Product.Price,
-                        ImageUrl = item.Product.ImageUrl                        
+                        ImageUrl = item.Product.ImageUrl
                     },
                     Price = item.Product.Price,
                     Quantity = item.Quantity,

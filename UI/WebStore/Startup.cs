@@ -1,22 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
+using WebStore.Clients.Clients;
+using WebStore.Clients.Values;
 using WebStore.DAL.Context;
-using WebStore.Interfaces.Services;
 using WebStore.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
-using System;
+using WebStore.Interfaces.Services;
+using WebStore.Interfaces.TestAPI;
 using WebStore.Services.Data;
 using WebStore.Services.InCookies;
-using WebStore.Services.InMemory;
-using WebStore.Services.InSql;
-using WebStore.Clients.Values;
-using WebStore.Interfaces.TestAPI;
-using WebStore.Interfaces.Services;
-using WebStore.Clients.Clients;
 
 namespace WebStore
 {
@@ -83,12 +80,11 @@ namespace WebStore
                     break;
 
                 default:
-                    throw new Exception($"Неизвестная строка подключения: {connStr}");                    
+                    throw new Exception($"Неизвестная строка подключения: {connStr}");
             }
 
             services.AddTransient<WebStoreDbInitializer>();
 
-            //services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
             services.AddTransient<IEmployeesData, EmloyeesClient>();
 
             services.AddTransient<IProductData, ProductsClient>();

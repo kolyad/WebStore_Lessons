@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WebStore.Domain.Dto
+﻿namespace WebStore.Domain.Dto
 {
     public class BrandDto
     {
@@ -8,6 +6,8 @@ namespace WebStore.Domain.Dto
 
         public string Name { get; set; }
 
-        public int Order { get; set; }        
+        public int Order { get; set; }
+
+        public int ProductsCount { get; init; }
     }
 }
