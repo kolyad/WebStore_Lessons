@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces;
@@ -14,7 +17,10 @@ namespace WebStore.ServiceHosting.Controllers.Identity
 
         public UsersController(WebStoreDb db)
         {
-            _userStore = new UserStore<User, Role, WebStoreDb>(db);                    
+            _userStore = new UserStore<User, Role, WebStoreDb>(db);
         }
+
+        [HttpGet("all")]
+        public async Task<IEnumerable<User>> GetAllUsers() => await _userStore.Users.ToArrayAsync();
     }
 }
