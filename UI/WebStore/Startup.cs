@@ -2,18 +2,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.Clients.Clients;
-using WebStore.Clients.Identity;
+using WebStore.Clients.Clients.Identity;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
-using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 
 namespace WebStore
@@ -29,21 +26,9 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<User, Role>()                
+            services.AddIdentity<User, Role>()
+                .AddApiClientsIdentityWebStores()
                 .AddDefaultTokenProviders();
-
-            #region Registration of Identity stores custom implementations
-            services.AddTransient<IUserStore<User>, UsersClient>();
-            services.AddTransient<IUserRoleStore<User>, UsersClient>();
-            services.AddTransient<IUserPasswordStore<User>, UsersClient>();
-            services.AddTransient<IUserEmailStore<User>, UsersClient>();
-            services.AddTransient<IUserPhoneNumberStore<User>, UsersClient>();
-            services.AddTransient<IUserTwoFactorStore<User>, UsersClient>();
-            services.AddTransient<IUserClaimStore<User>, UsersClient>();
-            services.AddTransient<IUserLoginStore<User>, UsersClient>();
-
-            services.AddTransient<IRoleStore<Role>, RolesClient>(); 
-            #endregion
 
             services.Configure<IdentityOptions>(opt =>
             {
@@ -75,7 +60,7 @@ namespace WebStore
 
                 opt.SlidingExpiration = true;
 
-            });            
+            });
 
             services.AddTransient<IEmployeesData, EmloyeesClient>();
 
