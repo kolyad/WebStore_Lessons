@@ -43,8 +43,8 @@ namespace WebStore.Services.Mapping
                 ImageUrl = product.ImageUrl,
                 BrandId = product.Brand?.Id,
                 Brand = product.Brand.FromDto(),
-                SectionId = product.Section.Id,
-                Section = product.Section.FromDto()
+                SectionId = product.Section?.Id ?? 0,
+                Section = product.Section?.FromDto()
             };
 
         public static IEnumerable<ProductDto> ToDto(this IEnumerable<Product> products) => products.Select(ToDto);

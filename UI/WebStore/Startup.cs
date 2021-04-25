@@ -2,17 +2,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.Clients.Clients;
+using WebStore.Clients.Clients.Identity;
 using WebStore.Clients.Values;
-using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestAPI;
-using WebStore.Services.Data;
 using WebStore.Services.InCookies;
 
 namespace WebStore
@@ -29,7 +27,7 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity<User, Role>()
-                .AddEntityFrameworkStores<WebStoreDb>()
+                .AddApiClientsIdentityWebStores()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(opt =>
@@ -64,27 +62,6 @@ namespace WebStore
 
             });
 
-            var connStr = _configuration["ConnectionString"];
-
-            switch (connStr)
-            {
-                case "SqlServer":
-                    services.AddDbContext<WebStoreDb>(opt =>
-                        opt.UseSqlServer(_configuration.GetConnectionString(connStr))
-                        .UseLazyLoadingProxies());
-                    break;
-
-                case "Sqlite":
-                    services.AddDbContext<WebStoreDb>(opt =>
-                        opt.UseSqlite(_configuration.GetConnectionString(connStr), o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-                    break;
-
-                default:
-                    throw new Exception($"Неизвестная строка подключения: {connStr}");
-            }
-
-            services.AddTransient<WebStoreDbInitializer>();
-
             services.AddTransient<IEmployeesData, EmloyeesClient>();
 
             services.AddTransient<IProductData, ProductsClient>();
@@ -99,10 +76,8 @@ namespace WebStore
                 .AddRazorRuntimeCompilation();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            db.Initialize();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -116,7 +91,6 @@ namespace WebStore
             app.UseAuthorization();
 
             app.UseWelcomePage("/welcome");
-
 
             app.UseEndpoints(endpoints =>
             {
