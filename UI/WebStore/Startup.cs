@@ -75,28 +75,7 @@ namespace WebStore
 
                 opt.SlidingExpiration = true;
 
-            });
-
-            var connStr = _configuration["ConnectionString"];
-
-            switch (connStr)
-            {
-                case "SqlServer":
-                    services.AddDbContext<WebStoreDb>(opt =>
-                        opt.UseSqlServer(_configuration.GetConnectionString(connStr))
-                        .UseLazyLoadingProxies());
-                    break;
-
-                case "Sqlite":
-                    services.AddDbContext<WebStoreDb>(opt =>
-                        opt.UseSqlite(_configuration.GetConnectionString(connStr), o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-                    break;
-
-                default:
-                    throw new Exception($"Неизвестная строка подключения: {connStr}");
-            }
-
-            services.AddTransient<WebStoreDbInitializer>();
+            });            
 
             services.AddTransient<IEmployeesData, EmloyeesClient>();
 
@@ -112,10 +91,8 @@ namespace WebStore
                 .AddRazorRuntimeCompilation();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDbInitializer db)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            db.Initialize();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -129,7 +106,6 @@ namespace WebStore
             app.UseAuthorization();
 
             app.UseWelcomePage("/welcome");
-
 
             app.UseEndpoints(endpoints =>
             {
